@@ -45,7 +45,8 @@ class ObjectAssigner
 	 */
 	valueAs(name, as, descriptor){
 		const sourceDescriptor = Object.getOwnPropertyDescriptor(this.source, name);
-		const targetDescriptor = Object.assign(Object(descriptor), {value: sourceDescriptor.value});
+		const objectDescriptor = {configurable: sourceDescriptor.configurable, enumerable: sourceDescriptor.enumerable, writable: sourceDescriptor.writable};
+		const targetDescriptor = Object.assign(objectDescriptor, Object(descriptor), {value: sourceDescriptor.value});
 		Object.defineProperty(this.target, as, targetDescriptor);
 		return this;
 	}
@@ -67,7 +68,8 @@ class ObjectAssigner
 	 */
 	getterAs(name, as, descriptor){
 		const sourceDescriptor = Object.getOwnPropertyDescriptor(this.source, name);
-		const targetDescriptor = Object.assign(Object(descriptor), {get: sourceDescriptor.get});
+		const objectDescriptor = {configurable: sourceDescriptor.configurable, enumerable: sourceDescriptor.enumerable, writable: sourceDescriptor.writable};
+		const targetDescriptor = Object.assign(objectDescriptor, Object(descriptor), {get: sourceDescriptor.get});
 		Object.defineProperty(this.target, as, targetDescriptor);
 		return this;
 	}
@@ -89,7 +91,8 @@ class ObjectAssigner
 	 */
 	setterAs(name, as, descriptor){
 		const sourceDescriptor = Object.getOwnPropertyDescriptor(this.source, name);
-		const targetDescriptor = Object.assign(Object(descriptor), {set: sourceDescriptor.set});
+		const objectDescriptor = {configurable: sourceDescriptor.configurable, enumerable: sourceDescriptor.enumerable, writable: sourceDescriptor.writable};
+		const targetDescriptor = Object.assign(objectDescriptor, Object(descriptor), {set: sourceDescriptor.set});
 		Object.defineProperty(this.target, as, targetDescriptor);
 		return this;
 	}
@@ -111,7 +114,8 @@ class ObjectAssigner
 	 */
 	accessAs(name, as, descriptor){
 		const sourceDescriptor = Object.getOwnPropertyDescriptor(this.source, name);
-		const targetDescriptor = Object.assign(Object(descriptor), {get: sourceDescriptor.get, set: sourceDescriptor.set});
+		const objectDescriptor = {configurable: sourceDescriptor.configurable, enumerable: sourceDescriptor.enumerable, writable: sourceDescriptor.writable};
+		const targetDescriptor = Object.assign(objectDescriptor, Object(descriptor), {get: sourceDescriptor.get, set: sourceDescriptor.set});
 		Object.defineProperty(this.target, as, targetDescriptor);
 		return this;
 	}
