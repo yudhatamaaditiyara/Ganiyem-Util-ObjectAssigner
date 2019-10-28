@@ -15,7 +15,7 @@
  */
 'use strict';
 
-const {isObject} = require('ganiyem-util-is');
+const {isObject, isFunction} = require('ganiyem-util-is');
 const {IllegalArgumentError} = require('ganiyem-error');
 
 /**
@@ -86,7 +86,7 @@ class ObjectAssigner
 		if (!sourceDescriptor) {
 			throw new IllegalArgumentError('The source property "' + String(name) + '" is not defined');
 		}
-		if (typeof sourceDescriptor.value !== 'function') {
+		if (!isFunction(sourceDescriptor.value)) {
 			throw new IllegalArgumentError('The source property "' + String(name) + '" is not function');
 		}
 		const objectDescriptor = {configurable: sourceDescriptor.configurable, enumerable: sourceDescriptor.enumerable, writable: sourceDescriptor.writable};
