@@ -15,6 +15,9 @@
  */
 'use strict';
 
+const {isObject} = require('ganiyem-util-is');
+const {IllegalArgumentError} = require('ganiyem-error');
+
 /**
  */
 class ObjectAssigner
@@ -22,16 +25,23 @@ class ObjectAssigner
 	/**
 	 * @param {Object} target
 	 * @param {Object} source
+	 * @throws {IllegalArgumentError}
 	 */
 	constructor(target, source){
+		if (!isObject(target)) {
+			throw new IllegalArgumentError('The target must be type of object');
+		}
+		if (!isObject(source)) {
+			throw new IllegalArgumentError('The source must be type of object');
+		}
 		this.target = target;
 		this.source = source;
 	}
 
 	/**
 	 * @param {string|symbol} name
-	 * @param {Object|void} descriptor
-	 * @returns {ObjectAssigner}
+	 * @param {Object=} descriptor
+	 * @return {ObjectAssigner}
 	 */
 	value(name, descriptor){
 		return this.valueAs(name, name, descriptor);
@@ -40,11 +50,15 @@ class ObjectAssigner
 	/**
 	 * @param {string|symbol} name
 	 * @param {string|symbol} as
-	 * @param {Object|void} descriptor
-	 * @returns {ObjectAssigner}
+	 * @param {Object=} descriptor
+	 * @throws {IllegalArgumentError}
+	 * @return {ObjectAssigner}
 	 */
 	valueAs(name, as, descriptor){
 		const sourceDescriptor = Object.getOwnPropertyDescriptor(this.source, name);
+		if (!sourceDescriptor) {
+			throw new IllegalArgumentError('The source property "' + String(name) + '" is not defined');
+		}
 		const objectDescriptor = {configurable: sourceDescriptor.configurable, enumerable: sourceDescriptor.enumerable, writable: sourceDescriptor.writable};
 		const targetDescriptor = Object.assign(objectDescriptor, Object(descriptor), {value: sourceDescriptor.value});
 		Object.defineProperty(this.target, as, targetDescriptor);
@@ -53,8 +67,38 @@ class ObjectAssigner
 
 	/**
 	 * @param {string|symbol} name
-	 * @param {Object|void} descriptor
-	 * @returns {ObjectAssigner}
+	 * @param {Object=} descriptor
+	 * @return {ObjectAssigner}
+	 */
+	method(name, descriptor){
+		return this.methodAs(name, name, descriptor);
+	}
+
+	/**
+	 * @param {string|symbol} name
+	 * @param {string|symbol} as
+	 * @param {Object=} descriptor
+	 * @throws {IllegalArgumentError}
+	 * @return {ObjectAssigner}
+	 */
+	methodAs(name, as, descriptor){
+		const sourceDescriptor = Object.getOwnPropertyDescriptor(this.source, name);
+		if (!sourceDescriptor) {
+			throw new IllegalArgumentError('The source property "' + String(name) + '" is not defined');
+		}
+		if (typeof sourceDescriptor.value !== 'function') {
+			throw new IllegalArgumentError('The source property "' + String(name) + '" is not function');
+		}
+		const objectDescriptor = {configurable: sourceDescriptor.configurable, enumerable: sourceDescriptor.enumerable, writable: sourceDescriptor.writable};
+		const targetDescriptor = Object.assign(objectDescriptor, Object(descriptor), {value: sourceDescriptor.value});
+		Object.defineProperty(this.target, as, targetDescriptor);
+		return this;
+	}
+
+	/**
+	 * @param {string|symbol} name
+	 * @param {Object=} descriptor
+	 * @return {ObjectAssigner}
 	 */
 	getter(name, descriptor){
 		return this.getterAs(name, name, descriptor);
@@ -63,11 +107,18 @@ class ObjectAssigner
 	/**
 	 * @param {string|symbol} name
 	 * @param {string|symbol} as
-	 * @param {Object|void} descriptor
-	 * @returns {ObjectAssigner}
+	 * @param {Object=} descriptor
+	 * @throws {IllegalArgumentError}
+	 * @return {ObjectAssigner}
 	 */
 	getterAs(name, as, descriptor){
 		const sourceDescriptor = Object.getOwnPropertyDescriptor(this.source, name);
+		if (!sourceDescriptor) {
+			throw new IllegalArgumentError('The source property "' + String(name) + '" is not defined');
+		}
+		if (!sourceDescriptor.get) {
+			throw new IllegalArgumentError('The source getter property "' + String(name) + '" is not defined');
+		}
 		const objectDescriptor = {configurable: sourceDescriptor.configurable, enumerable: sourceDescriptor.enumerable};
 		const targetDescriptor = Object.assign(objectDescriptor, Object(descriptor), {get: sourceDescriptor.get});
 		Object.defineProperty(this.target, as, targetDescriptor);
@@ -76,8 +127,8 @@ class ObjectAssigner
 
 	/**
 	 * @param {string|symbol} name
-	 * @param {Object|void} descriptor
-	 * @returns {ObjectAssigner}
+	 * @param {Object=} descriptor
+	 * @return {ObjectAssigner}
 	 */
 	setter(name, descriptor){
 		return this.setterAs(name, name, descriptor);
@@ -86,11 +137,18 @@ class ObjectAssigner
 	/**
 	 * @param {string|symbol} name
 	 * @param {string|symbol} as
-	 * @param {Object|void} descriptor
-	 * @returns {ObjectAssigner}
+	 * @param {Object=} descriptor
+	 * @throws {IllegalArgumentError}
+	 * @return {ObjectAssigner}
 	 */
 	setterAs(name, as, descriptor){
 		const sourceDescriptor = Object.getOwnPropertyDescriptor(this.source, name);
+		if (!sourceDescriptor) {
+			throw new IllegalArgumentError('The source property "' + String(name) + '" is not defined');
+		}
+		if (!sourceDescriptor.set) {
+			throw new IllegalArgumentError('The source setter property "' + String(name) + '" is not defined');
+		}
 		const objectDescriptor = {configurable: sourceDescriptor.configurable, enumerable: sourceDescriptor.enumerable};
 		const targetDescriptor = Object.assign(objectDescriptor, Object(descriptor), {set: sourceDescriptor.set});
 		Object.defineProperty(this.target, as, targetDescriptor);
@@ -99,21 +157,31 @@ class ObjectAssigner
 
 	/**
 	 * @param {string|symbol} name
-	 * @param {Object|void} descriptor
-	 * @returns {ObjectAssigner}
+	 * @param {Object=} descriptor
+	 * @return {ObjectAssigner}
 	 */
 	access(name, descriptor){
-		return this.accessAs(name, name);
+		return this.accessAs(name, name, descriptor);
 	}
 
 	/**
 	 * @param {string|symbol} name
 	 * @param {string|symbol} as
-	 * @param {Object|void} descriptor
-	 * @returns {ObjectAssigner}
+	 * @param {Object=} descriptor
+	 * @throws {IllegalArgumentError}
+	 * @return {ObjectAssigner}
 	 */
 	accessAs(name, as, descriptor){
 		const sourceDescriptor = Object.getOwnPropertyDescriptor(this.source, name);
+		if (!sourceDescriptor) {
+			throw new IllegalArgumentError('The source property "' + String(name) + '" is not defined');
+		}
+		if (!sourceDescriptor.get) {
+			throw new IllegalArgumentError('The source getter property "' + String(name) + '" is not defined');
+		}
+		if (!sourceDescriptor.set) {
+			throw new IllegalArgumentError('The source setter property "' + String(name) + '" is not defined');
+		}
 		const objectDescriptor = {configurable: sourceDescriptor.configurable, enumerable: sourceDescriptor.enumerable};
 		const targetDescriptor = Object.assign(objectDescriptor, Object(descriptor), {get: sourceDescriptor.get, set: sourceDescriptor.set});
 		Object.defineProperty(this.target, as, targetDescriptor);
