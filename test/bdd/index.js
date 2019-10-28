@@ -246,7 +246,7 @@ describe('index', () => {
 			object.value(symbol);
 			assert.ok(false);
 		} catch (e) {
-			assert.ok(true);
+			assert.ok(e instanceof IllegalArgumentError);
 		}
 	});
 
