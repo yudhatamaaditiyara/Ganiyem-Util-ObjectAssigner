@@ -39,20 +39,20 @@ class ObjectAssigner
 	}
 
 	/**
-	 * @param {string|symbol} name
-	 * @param {Object=} descriptor
-	 * @return {ObjectAssigner}
+	 * @param {(string|symbol)} name
+	 * @param {Object} [descriptor]
+	 * @returns {ObjectAssigner}
 	 */
 	value(name, descriptor){
 		return this.valueAs(name, name, descriptor);
 	}
 
 	/**
-	 * @param {string|symbol} name
-	 * @param {string|symbol} as
-	 * @param {Object=} descriptor
+	 * @param {(string|symbol)} name
+	 * @param {(string|symbol)} as
+	 * @param {Object} [descriptor]
 	 * @throws {IllegalArgumentError}
-	 * @return {ObjectAssigner}
+	 * @returns {ObjectAssigner}
 	 */
 	valueAs(name, as, descriptor){
 		const sourceDescriptor = Object.getOwnPropertyDescriptor(this.source, name);
@@ -66,20 +66,20 @@ class ObjectAssigner
 	}
 
 	/**
-	 * @param {string|symbol} name
-	 * @param {Object=} descriptor
-	 * @return {ObjectAssigner}
+	 * @param {(string|symbol)} name
+	 * @param {Object} [descriptor]
+	 * @returns {ObjectAssigner}
 	 */
 	method(name, descriptor){
 		return this.methodAs(name, name, descriptor);
 	}
 
 	/**
-	 * @param {string|symbol} name
-	 * @param {string|symbol} as
-	 * @param {Object=} descriptor
+	 * @param {(string|symbol)} name
+	 * @param {(string|symbol)} as
+	 * @param {Object} [descriptor]
 	 * @throws {IllegalArgumentError}
-	 * @return {ObjectAssigner}
+	 * @returns {ObjectAssigner}
 	 */
 	methodAs(name, as, descriptor){
 		const sourceDescriptor = Object.getOwnPropertyDescriptor(this.source, name);
@@ -96,20 +96,20 @@ class ObjectAssigner
 	}
 
 	/**
-	 * @param {string|symbol} name
-	 * @param {Object=} descriptor
-	 * @return {ObjectAssigner}
+	 * @param {(string|symbol)} name
+	 * @param {Object} [descriptor]
+	 * @returns {ObjectAssigner}
 	 */
 	getter(name, descriptor){
 		return this.getterAs(name, name, descriptor);
 	}
 
 	/**
-	 * @param {string|symbol} name
-	 * @param {string|symbol} as
-	 * @param {Object=} descriptor
+	 * @param {(string|symbol)} name
+	 * @param {(string|symbol)} as
+	 * @param {Object} [descriptor]
 	 * @throws {IllegalArgumentError}
-	 * @return {ObjectAssigner}
+	 * @returns {ObjectAssigner}
 	 */
 	getterAs(name, as, descriptor){
 		const sourceDescriptor = Object.getOwnPropertyDescriptor(this.source, name);
@@ -126,20 +126,20 @@ class ObjectAssigner
 	}
 
 	/**
-	 * @param {string|symbol} name
-	 * @param {Object=} descriptor
-	 * @return {ObjectAssigner}
+	 * @param {(string|symbol)} name
+	 * @param {Object} [descriptor]
+	 * @returns {ObjectAssigner}
 	 */
 	setter(name, descriptor){
 		return this.setterAs(name, name, descriptor);
 	}
 
 	/**
-	 * @param {string|symbol} name
-	 * @param {string|symbol} as
-	 * @param {Object=} descriptor
+	 * @param {(string|symbol)} name
+	 * @param {(string|symbol)} as
+	 * @param {Object} [descriptor]
 	 * @throws {IllegalArgumentError}
-	 * @return {ObjectAssigner}
+	 * @returns {ObjectAssigner}
 	 */
 	setterAs(name, as, descriptor){
 		const sourceDescriptor = Object.getOwnPropertyDescriptor(this.source, name);
@@ -156,20 +156,20 @@ class ObjectAssigner
 	}
 
 	/**
-	 * @param {string|symbol} name
-	 * @param {Object=} descriptor
-	 * @return {ObjectAssigner}
+	 * @param {(string|symbol)} name
+	 * @param {Object} [descriptor]
+	 * @returns {ObjectAssigner}
 	 */
 	access(name, descriptor){
 		return this.accessAs(name, name, descriptor);
 	}
 
 	/**
-	 * @param {string|symbol} name
-	 * @param {string|symbol} as
-	 * @param {Object=} descriptor
+	 * @param {(string|symbol)} name
+	 * @param {(string|symbol)} as
+	 * @param {Object} [descriptor]
 	 * @throws {IllegalArgumentError}
-	 * @return {ObjectAssigner}
+	 * @returns {ObjectAssigner}
 	 */
 	accessAs(name, as, descriptor){
 		const sourceDescriptor = Object.getOwnPropertyDescriptor(this.source, name);
