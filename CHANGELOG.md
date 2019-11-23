@@ -1,22 +1,17 @@
 # 1.1.3 - 2019-11-15
 
-**Changed**
-- Deps `ganiyem-error 1.5.1`
-- Deps `ganiyem-util-is 1.0.6`
-- Renamed `package.scripts.coveralls` to `coverage`
-- Test refactoring
-
-**Removed**
-- Remove devDeps `mocha-lcov-reporter 1.3.0`
+- build: upgrade deps `ganiyem-error@1.5.1`
+- build: upgrade deps `ganiyem-util-is@1.0.6`
+- build: remove devDeps `mocha-lcov-reporter@1.3.0`
+- build: rename `package.scripts.coveralls` to `package.scripts.coverage`
+- ci: rename `coveralls` to `coverage`
+- test: refactoring
 
 # 1.1.2 - 2019-11-02
 
-**Changed**
-- Deps `ganiyem-util-is 1.0.4`
-
-**Fixed**
-- Fix jsdoc comment
+- build: upgrade deps `ganiyem-util-is@1.0.4`
+- docs: fix JSDoc comment
 
 # 1.1.1 - 2019-10-31
 
-- Release
+- Initial release
